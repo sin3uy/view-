@@ -3,273 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رياض لبيع السلع</title>
+    <title>معاينة الأكواد</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            direction: rtl;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 50px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-            text-align: center;
-        }
-        .navbar {
-            background-color: #333;
             overflow: hidden;
-            border-radius: 50px 50px 0 0;
         }
-        .navbar a {
-            float: right;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: auto;
         }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: right;
+        .editor {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 10px;
-            display: inline-block;
+        .code-area {
+            flex: 1;
+            margin: 5px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            font-family: monospace;
+            height: 200px;
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px;
         }
-        button:hover {
-            background-color: #45a049;
+        .buttons button {
+            padding: 10px;
+        }
+        .preview {
+            flex: 1;
+            border: 1px solid #ccc;
+            margin: 5px;
+            overflow: auto;
+            height: 300px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="navbar">
-        <a href="#home">رياض لبيع السلع</a>
+    <div class="container">
+        <div class="editor">
+            <textarea id="code" class="code-area" placeholder="اكتب كود HTML وCSS وJavaScript هنا"></textarea>
+            <div class="buttons">
+                <button onclick="clearCode()">حذف الكود</button>
+            </div>
+        </div>
+        <iframe id="preview" class="preview"></iframe>
     </div>
 
-    <div class="form-group">
-        <label for="product">اختر المنتج</label>
-        <select id="product" name="product">
-            <option value="watch">ساعة</option>
-            <option value="phone">هاتف</option>
-            <option value="android">أندرويد</option>
-        </select>
-    </div>
+    <script>
+        const codeArea = document.getElementById('code');
+        const previewFrame = document.getElementById('preview');
 
-    <div class="form-group">
-        <label for="fullName">اكتب اسمك بالكامل</label>
-        <input type="text" id="fullName" name="fullName" placeholder="اسمك الكامل">
-    </div>
+        codeArea.addEventListener('input', updatePreview);
 
-    <div class="form-group">
-        <label for="address">اكتب عنوانك بالكامل</label>
-        <input type="text" id="address" name="address" placeholder="عنوانك الكامل">
-    </div>
+        function updatePreview() {
+            const code = codeArea.value;
+            const preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
 
-    <div class="form-group">
-        <label for="country">اختر دولتك</label>
-        <select id="country" name="country">
-            <option value="iraq">العراق</option>
-            <option value="egypt">مصر</option>
-            <option value="palestine">فلسطين</option>
-            <option value="jordan">الأردن</option>
-            <option value="libya">ليبيا</option>
-            <option value="saudi">السعودية</option>
-            <option value="oman">عمان</option>
-        </select>
-    </div>
+            preview.open();
+            preview.write(code);
+            preview.close();
+        }
 
-    <button onclick="goToPaymentPage()">متابعة الشراء</button>
-    <button onclick="openSidebar()">عرض الأقسام</button>
-</div>
-
-<div id="sidebar" style="display:none; position:fixed; top:0; right:0; width:250px; height:100%; background-color:#333; color:white; padding:20px; box-shadow:-2px 0 5px rgba(0,0,0,0.5);">
-    <h2>الأقسام</h2>
-    <ul>
-        <li><a href="#" style="color:white;">قسم واحد</a></li>
-        <li><a href="#" style="color:white;">قسم اثنين</a></li>
-        <li><a href="#" style="color:white;">قسم ثلاثة</a></li>
-        <li><a href="#" style="color:white;">قسم أربعة</a></li>
-    </ul>
-    <button onclick="closeSidebar()" style="background-color:#444; color:white;">إغلاق</button>
-</div>
-
-<script>
-    function goToPaymentPage() {
-        window.location.href = "payment.html";
-    }
-    function openSidebar() {
-        document.getElementById('sidebar').style.display = 'block';
-    }
-    function closeSidebar() {
-        document.getElementById('sidebar').style.display = 'none';
-    }
-</script>
+        function clearCode() {
+            codeArea.value = '';
+            updatePreview();
+        }
+    </script>
 
 </body>
 </html>
-
-<!-- Payment Page -->
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معلومات الدفع</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-        }
-        .container {
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 10px;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="form-group">
-        <label for="paymentMethod">اختار طريقة الدفع</label>
-        <select id="paymentMethod" name="paymentMethod">
-            <option value="vodafone">فودافون كاش</option>
-            <option value="orange">أورنج كاش</option>
-            <option value="etisalat">اتصالات كاش</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="phoneNumber">حول على هذا الرقم: 01099819012 <button onclick="copyPhoneNumber()">نسخ</button></label>
-    </div>
-
-    <div class="form-group">
-        <label for="transferNumber">الرقم الذي حولت منه</label>
-        <input type="text" id="transferNumber" name="transferNumber" placeholder="أدخل رقم التحويل">
-    </div>
-
-    <button onclick="goToOrderDetailsPage()">متابعة الشراء</button>
-</div>
-
-<script>
-    function copyPhoneNumber() {
-        navigator.clipboard.writeText('01099819012');
-        alert('تم نسخ الرقم');
-    }
-
-    function goToOrderDetailsPage() {
-        var product = document.getElementById('product').value;
-        var transferNumber = document.getElementById('transferNumber').value;
-        window.location.href = `order-details.html?product=${product}&transferNumber=${transferNumber}`;
-    }
-</script>
-
-</body>
-</html>
-
-<!-- Order Details Page -->
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفاصيل طلبك</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl;
-        }
-        .container {
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 10px;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="form-group">
-        <label>الرقم الذي حولت منه: <span id="displayTransferNumber"></span></label
